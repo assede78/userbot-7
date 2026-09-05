@@ -18,9 +18,12 @@ TEMPLATES_FILE = WORKDIR / "templates.json"
 AUTOROTATE_FILE = WORKDIR / "autorotate.json"
 
 # Railway reads these values from Variables.
-API_ID = int(os.environ.get("TG_API_ID", "35179622"))
-API_HASH = os.environ.get("TG_API_HASH", "f015a6c1fbb927fdfe42c5b11dd96e7a")
-ADMIN_ID = 7890900149
+try:
+    API_ID = int(os.environ["TG_API_ID"])
+    API_HASH = os.environ["TG_API_HASH"].strip()
+    ADMIN_ID = int(os.environ["ADMIN_ID"])
+except (KeyError, ValueError) as exc:
+    raise RuntimeError("TG_API_ID, TG_API_HASH, dan ADMIN_ID wajib diisi melalui Railway Variables") from exc
 BOT_LABEL = os.environ.get("BOT_LABEL", "USERBOT PROMO 7").strip() or "USERBOT PROMO 7"
 SESSION_STRING = os.environ.get("SESSION_STRING", "").strip()
 if not SESSION_STRING:
